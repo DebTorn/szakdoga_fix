@@ -5,3 +5,6 @@ Mindezt Java-ban szeretném megvalósítani, web alapon, Spring boot segítség�
 
 <h1>Admin felület</h1>
 Oldalak: Ügyfelek, Dolgozók, Projektek, Elszámolás
+
+<h3>Ügyfelek:</h3>
+  
