@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="hu" layout:decorator="layouts/main">
+<head>
+	<title>Ãœgyfelek</title>
+</head>
+<body>
+
+	<div layout:fragment="content">
+
+		<div class="modal fade" id="kotesModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="kotesModalLabel" aria-hidden="true">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title" id="kotesModalLabel">Új kötés</h5>
+		        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		      </div>
+		      <div class="modal-body">
+		      	<form th:method="POST" th:id="kotesUgyfelForm">
+		      		<div class="form-group">
+		      			<label th:for="ugyfel">Ügyfél:</label>
+		      			<select th:name="ugyfel" id="ugyfelek" required>
+		      				<option th:text="#{kivalasztas}" th:value="nincs"  selected disabled></option>
+		      				<option th:each="ugyfel : ${ugyfelek}" th:if="${ugyfel.aktiv != 0}" th:value="${ugyfel.id}" th:text="${ugyfel.name}"></option>
+		      			</select>
+		      		</div>
+		      		<div class="form-group class="mt-2"">
+		      			<label th:for="projekt">Projekt:</label>
+		      			<select th:name="projekt" id="projektek" required>
+		      				<option th:value="nincs" selected disabled></option>
+		      			</select>
+		      		</div>
+		      		<label th:for="oraber" class="mt-2">Órabér</label>
+		      		<input type="number" class="form-control" th:name="oraber" th:id="oraber" required>
+		      		<input type="submit" class="btn btn-primary" th:value="#{kuldes}">
+		      	</form>
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-secondary" th:text="#{bezaras}" data-bs-dismiss="modal">BezÃ¡rÃ¡s</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+
+		<div class="modal fade" id="feltoltesModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title" id="feltoltesModalLabel">Ãšj Ã¼gyfÃ©l</h5>
+		        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		      </div>
+		      <div class="modal-body">
+		      	<form th:id="ujUgyfelForm" th:method="POST">
+		      		<div class="form-group">
+		      			<label th:for="ujNev">NÃ©v:</label>
+		      			<input type="text" class="form-control mb-3" th:name="ujNev" th:id="ujNev" required>
+		      		</div>
+		      		<input type="submit" class="btn btn-primary" th:value="#{kuldes}">
+		      	</form>
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-secondary" th:text="#{bezaras}" data-bs-dismiss="modal">BezÃ¡rÃ¡s</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+
+		<div class="container mt-4">
+			<div class="row">
+				<div class="col-sm-12">
+					<button type="button" class="btn btn-primary mt-4" data-bs-toggle="modal" data-bs-target="#feltoltesModal">
+						Ãšj Ã¼gyfÃ©l felvÃ©tele
+					</button>
+					<button type="button" class="btn btn-primary mt-4" data-bs-toggle="modal" data-bs-target="#kotesModal">
+						Új kötés
+					</button>
+					<table class="table table-striped text-center mt-2">
+						<thead class="bg-dark text-white">
+							<th th:text="#{nev}">NÃ©v</th>
+							<th th:text="#{aktivitas}">AktivitÃ¡s</th>
+							<th th:text="#{feltoltve}">Feltöltve</th>
+							<th th:text="#{modositva}">Módosítva</th>
+							<th th:text="#{modositas}">Módosítás</th>
+						</thead>
+						<tbody>
+							<tr th:each="ugyfel : ${ugyfelek}" th:id="${ugyfel.id}">
+								<td th:text="${ugyfel.name}"></td>
+								<td>
+									<input th:if="${ugyfel.aktiv == 1}" th:value="${ugyfel.id}" th:id="checkie" class="form-check-input" th:type="checkbox" checked>
+									<input th:if="${ugyfel.aktiv == 0}" th:value="${ugyfel.id}" th:id="checkie" class="form-check-input" th:type="checkbox">
+								</td>
+								<td th:text="${ugyfel.created_at}"></td>
+								<td th:text="${ugyfel.updated_at}"></td>
+								<td><button class="btn btn-success modosit" th:text="#{modositas}" th:id="${ugyfel.id}" data-bs-toggle="modal" data-bs-target="#modositasModal"></button></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<div class="row mt-5">
+				<div class="col-sm-12">
+					<table class="table table-striped text-center">
+						<thead class="bg-dark text-white">
+							<th th:text="#{projekt}">Projekt</th>
+							<th th:text="#{ugyfel}">ÃœgyfÃ©l</th>
+							<th th:text="#{oraber}">Ã“rabÃ©r</th>
+							<th th:text="#{modositas}">Módosítás</th>
+						</thead>
+						<tbody>
+							<tr th:each="kotes : ${ugykotes}" th:id="${kotes.id}">
+								<td th:text="${kotes.projekt.name}"></td>
+								<td th:text="${kotes.ugyfel.name}"></td>
+								<td th:text="${kotes.oraber}"></td>
+								<td><button th:text="#{torles}" th:id="${kotes.id}" class="btn btn-danger kotesTorles">Törlés</button></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+
+		<div class="modal fade" id="modositasModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modositasModalLabel" aria-hidden="true">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title" id="modositasModalLabel" th:text="#{modosit}">Módosítás</h5>
+		        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		      </div>
+		      <div class="modal-body">
+		        <form th:id="ugyfelModositasForm" th:method="POST">
+		        	<div class="mb-3">
+					    <label th:for="nev" class="form-label">Ügyfél neve</label>
+					    <input th:type="text" class="form-control nevMod">
+				  	</div>
+				  	<input type="submit" class="btn btn-success" th:value="#{modositas}">
+		        </form>
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-secondary" th:text="#{bezaras}" data-bs-dismiss="modal">Bezárás</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+		
+	</div>
+	<script layout:fragment="script" th:src="@{/js/ugyfel.js}"></script>
+</body>
+</html>

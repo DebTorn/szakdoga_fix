@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="hu" layout:decorator="layouts/main">
+<head>
+	<title>Profil</title>
+</head>
+<body>
+
+	<div layout:fragment="content">
+
+		<div class="container mt-4">
+			<div class="row">
+				<div class="col-sm-12">
+					<div class="card">
+					  <div class="card-body" sec:authorize="hasAuthority('USER')">
+					    Jelszó visszaállítási kérelem!
+					    <button class="btn btn-primary" id="jelszovissza">Küldés</button>
+					  </div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+	</div>
+	<script layout:fragment="script" th:src="@{/js/profil.js}"></script>
+
+</body>
+</html>

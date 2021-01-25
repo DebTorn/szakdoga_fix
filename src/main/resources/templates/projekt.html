@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="hu" layout:decorator="layouts/main">
+<head>
+	<title>Projektek</title>
+</head>
+<body>
+
+	<div layout:fragment="content">
+
+		<div class="modal fade" id="ujProjektModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="ujProjekLabel" aria-hidden="true">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title" id="ujProjekLabel">√öj projekt</h5>
+		        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		      </div>
+		      <div class="modal-body">
+		        <form th:id="projektFeltoltesForm" method="POST">
+		        	<div class="form-group">
+		        		<label th:for="nev">N√©v:</label>
+		        		<input type="text" th:name="nev" th:id="nev" required>
+		        	</div>
+		        	<div class="form-group">
+		        		<label th:for="leiras">Le√≠r√°s:</label>
+		        		<input type="text" th:name="leiras" th:id="leiras" required>
+		        	</div>
+		        	<div class="form-group">
+		        		<label th:for="oradij">Tervezett √≥rad√≠j:</label>
+		        		<input type="number" th:name="oradij" th:id="oradij" required>
+		        	</div>
+		        	<div class="form-group">
+		        		<label th:for="status">St√°tusz:</label>
+		        		<select th:name="status" th:id="status" required>
+		        			<option th:id="0" th:value="0" th:text="Lez·rt">Lez√°rt</option>
+		        			<option th:id="1" th:value="1" th:text="Folyamatban">Folyamatban</option>
+		        			<option th:id="2" th:value="2" th:text="Tervezett">Tervezett</option>
+		        		</select>
+		        	</div>
+		        	<div class="form-group">
+		        		<label th:for="tipus">TÌpus:</label>
+		        		<select th:name="tipus" th:id="tipus" required>
+		        			<option th:id="1" th:value="1" th:text="EgyÈb">Egy√©b</option>
+		        			<option th:id="2" th:value="2" th:text="Saj·t">Saj√°t</option>
+		        			<option th:id="3" th:value="3" th:text="BefektetÈs">Befektet√©s</option>
+		        			<option th:id="4" th:value="4" th:text="Fizetı">Fizet≈ë</option>
+		        		</select>
+		        	</div>
+
+		        	<input th:type="submit" class="btn btn-primary">
+
+		        </form>
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-secondary" th:text="#{bezaras}" data-bs-dismiss="modal">Bez√°r√°s</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+		
+		<div class="modal fade" id="koltsegModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="koltsegModalLabel" aria-hidden="true">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title" id="koltsegModalLabel" th:text="#{koltsegfeltoltes}">KˆltsÈg feltˆltÈs</h5>
+		        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		      </div>
+		      <div class="modal-body">
+		        <form th:id="koltsegForm" th:method="POST">
+		        	<div class="mb-3">
+					    <label th:for="projekt" th:text="#{projekt}" class="form-label">Projekt</label>
+					    <select class="form-select" th:id="projekt" required>
+					    	<option th:each="projekt : ${projektek}" th:value="${projekt.id}" th:text="${projekt.name}"></option>
+					    </select>
+				  	</div>
+				  	<div class="mb-3">
+				  		<label th:for="megnevezes" th:text="#{megnevezes}"></label>
+				  		<input type="text" class="form-control" th:name="megnevzes" th:id="megnevezes" required>
+				  	</div>
+				  	<div class="mb-3">
+				  		<label th:for="koltseg" th:text="#{koltseg}"></label>
+				  		<input type="number" class="form-control" th:name="koltseg" th:id="koltseg" required>
+				  	</div>
+				  	<input type="submit" class="btn btn-success" th:value="#{modositas}">
+		        </form>
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-secondary" th:text="#{bezaras}" data-bs-dismiss="modal">Bez·r·s</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+		
+		<div class="modal fade" id="modositasModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modositasModalLabel" aria-hidden="true">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title" id="modositasModalLabel" th:text="#{modosit}">MÛdosÌt·s</h5>
+		        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		      </div>
+		      <div class="modal-body">
+		        <form th:id="projektModositasForm" th:method="POST">
+		        	<div class="mb-3">
+					    <label th:for="ModProNev" th:text="#{projektneve}" class="form-label">Projekt neve</label>
+					    <input th:type="text" class="form-control" th:id="ModProNev" required>
+				  	</div>
+				  	<div class="mb-3">
+					    <label th:for="ModProTipus" th:text="#{projekttipus}" class="form-label">Projekt tÌpusa</label>
+		        		<select th:name="tipus" th:id="ModProTipus" class="form-select" required>
+		        			<option th:value="1" th:text="#{egyeb}">Egy√©b</option>
+		        			<option th:value="2" th:text="#{sajat}">Saj√°t</option>
+		        			<option th:value="3" th:text="#{befektetes}">Befektet√©s</option>
+		        			<option th:value="4" th:text="#{fizeto}">Fizet≈ë</option>
+		        		</select>
+				  	</div>
+				  	<div class="mb-3">
+					    <label th:for="ModProStatus" th:text="#{projektstatus}" class="form-label">Projekt st·tusza</label>
+					    <select th:name="status" th:id="ModProStatus" class="form-select" required>
+		        			<option th:value="0" th:text="#{lezart}">Lez√°rt</option>
+		        			<option th:value="1" th:text="#{folyamatban}">Folyamatban</option>
+		        			<option th:value="2" th:text="#{tervezett}">Tervezett</option>
+		        		</select>
+				  	</div>
+				  	<div class="mb-3">
+					    <label th:for="ModProOraber" th:text="#{projektoraber}" class="form-label">Projekt ÛrabÈr</label>
+					    <input th:type="number" class="form-control" th:id="ModProOraber" required>
+				  	</div>
+				  	<div class="mb-3">
+					    <label th:for="ModProLeiras" th:text="#{projektleiras}" class="form-label">Projekt leÌr·s</label>
+					    <textarea class="form-control" th:id="ModProLeiras" required></textarea>
+				  	</div>
+				  	<input type="hidden" th:id="hiddenId">
+				  	<input type="submit" class="btn btn-success" th:value="#{modositas}">
+		        </form>
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-secondary" th:text="#{bezaras}" data-bs-dismiss="modal">Bez·r·s</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+		
+		<div class="modal fade" id="koltsegModositasModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="koltsegModositasModalLabel" aria-hidden="true">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title" id="koltsegModositasModalLabel" th:text="#{modosit}">MÛdosÌt·s</h5>
+		        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		      </div>
+		      <div class="modal-body">
+		        <form th:id="koltsegModositasForm" th:method="POST">
+		        	<div class="mb-3">
+					    <label th:for="ModKoltsegProjekt" th:text="#{projekt}" class="form-label">Projekt</label>
+					    <select class="form-select" th:id="ModKoltsegProjekt" required>
+					    	<option th:each="projekt : ${projektek}" th:value="${projekt.id}" th:text="${projekt.name}"></option>
+					    </select>
+				  	</div>
+				  	<div class="mb-3">
+				  		<label th:for="ModKoltsegMegnevezes" th:text="#{megnevezes}"></label>
+				  		<input type="text" class="form-control" th:name="ModKoltsegMegnevezes" th:id="ModKoltsegMegnevezes" required>
+				  	</div>
+				  	<div class="mb-3">
+				  		<label th:for="ModKoltsegKoltseg" th:text="#{koltseg}"></label>
+				  		<input type="number" class="form-control" th:name="ModKoltsegKoltseg" th:id="ModKoltsegKoltseg" required>
+				  	</div>
+				  	<input type="hidden" th:id="hiddenKoltsegId">
+				  	<input type="submit" class="btn btn-success" th:value="#{modositas}">
+		        </form>
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-secondary" th:text="#{bezaras}" data-bs-dismiss="modal">Bez·r·s</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+
+		<div class="container mt-5">
+			<div class="row">
+				<div class="col-sm-12">
+					<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ujProjektModal">
+					  √öj projekt l√©trehoz√°sa
+					</button>
+					<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#koltsegModal">
+						⁄j kˆltsÈg feltˆltÈse
+					</button>
+					<table class="table table-striped mt-2 text-center">
+						<thead class="bg-dark text-white">
+							<th th:text="#{nev}">N√©v</th>
+							<th th:text="#{leiras}">Le√≠r√°s</th>
+							<th th:text="#{tervezettoradij}">Tervezett √≥rad√≠j</th>
+							<th th:text="#{status}">St√°tusz</th>
+							<th th:text="#{tipus}">T√≠pus</th>
+							<th th:text="#{feltoltve}">Felt√∂ltve</th>
+							<th th:text="#{modositas}">MÛdosÌt·s</th>
+						</thead>
+						<tbody>
+							<tr th:each="projekt : ${projektek}" th:id="${projekt.id}">
+								<td th:text="${projekt.name}"></td>
+								<td th:text="${projekt.leiras}"></td>
+								<td th:text="${projekt.tervezettoraber}"></td>
+								<td th:switch="${projekt.status}">
+									<span th:case="'0'" th:text="#{lezart}"></span>
+									<span th:case="'1'" th:text="#{folyamatban}"></span>
+									<span th:case="'2'" th:text="#{tervezett}"></span>
+								</td>
+								<td th:switch="${projekt.type}">
+									<span th:case="'1'" th:text="#{egyeb}"></span>
+									<span th:case="'2'" th:text="#{sajat}"></span>
+									<span th:case="'3'" th:text="#{befektetes}"></span>
+									<span th:case="'4'" th:text="#{fizeto}"></span>
+								</td>
+								<td th:text="${projekt.created_at}"></td>
+								<td><button th:text="#{modositas}" class="btn btn-success modosit" th:id="${projekt.id}" data-bs-toggle="modal" data-bs-target="#modositasModal">MÛdosÌt·s</button></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<br>
+			<div class="row">
+				<div class="col-sm-12">
+					<table class="table table-striped text-center">
+						<thead class="bg-dark text-white">
+							<th th:text="#{projekt}"></th>
+							<th th:text="#{megnevezes}"></th>
+							<th th:text="#{koltseg}"></th>
+							<th th:text="#{feltoltve}"></th>
+							<th th:text="#{modositva}"></th>
+							<th th:text="#{modositas}"></th>
+							<th th:text="#{torles}"></th>
+						</thead>
+						<tbody>
+							<tr th:each="koltseg : ${koltsegek}" th:id="${koltseg.id}">
+								<td th:text="${koltseg.projekt.name}"></td>
+								<td th:text="${koltseg.megnevezes}"></td>
+								<td th:text="${#numbers.formatInteger(koltseg.koltseg,3,'DEFAULT')}"></td>
+								<td th:text="${koltseg.created_at}"></td>
+								<td th:text="${koltseg.updated_at}"></td>
+								<td><button type="button" th:text="#{modositas}" class="btn btn-success koltsegModosit" data-bs-toggle="modal" data-bs-target="#koltsegModositasModal" th:id="${koltseg.id}"></td>
+								<td><button type="button" th:text="#{torles}" class="btn btn-danger koltsegTorles" th:id="${koltseg.id}"></button></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			
+		</div>
+
+	</div>
+	
+	<script layout:fragment="script" th:src="@{/js/projekt.js}"></script>
+	
+</body>
+</html>

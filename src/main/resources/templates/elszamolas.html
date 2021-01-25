@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="hu" layout:decorator="layouts/main">
+	<head>
+		<title>Elszámolás</title>
+	</head>
+	<body>
+		<div layout:fragment="content">
+			
+			<div class="modal fade" id="modositasModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modositasModalLabel" aria-hidden="true">
+			  <div class="modal-dialog">
+			    <div class="modal-content">
+			      <div class="modal-header">
+			        <h5 class="modal-title" id="modositasModalLabel">Módosítás</h5>
+			        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			      </div>
+			      <div class="modal-body">
+			        <form th:method="POST" th:id="modositasModalForm">
+			        	<div class="form-group">
+			        		<label th:for="munkavegzesDatum">Munkavégzés dátuma</label>
+			        		<input type="date" th:name="munkavegzesDatum" th:id="munkavegzesDatum" class="form-control" required>
+			        	</div>
+			        	<div class="form-group">
+			        		<label th:for="projektNev">Projekt neve</label>
+			        		<select class="form-select" th:id="projektNev" required></select>
+			        	</div>
+			        	<div class="form-group">
+			        		<label th:for="munkaTipus">Munka típusa</label>
+			        		<select th:name="munkaTipus" th:id="munkaTipus" class="form-select" required>
+			        			<option value="1">programozás</option>
+			        			<option value="2">tervezés</option>
+			        			<option value="3">tesztelés</option>
+			        			<option value="4">dokumentáció</option>
+			        			<option value="5">támogatás</option>
+			        			<option value="6">grafikai munka</option>
+			        			<option value="7">tartalom kezelés</option>
+			        			<option value="8">egyéb</option>
+			        		</select>
+			        	</div>
+				        <div class="row mt-3">
+			        		<div class="col">	
+			        			<label th:for="munkaOra">Óra:</label>
+								<input type="number" th:name="munkaOra" th:id="munkaOra" min="0" max="23" class="form-control" required>
+			        		</div>
+							<div class="col">
+								<label th:for="munkaPerc">Perc:</label>
+								<select class="form-select" th:name="munkaPerc" th:id="munkaPerc" required>
+									<option value="0">0</option>
+									<option value="15">15</option>
+									<option value="30">30</option>
+									<option value="45">45</option>
+								</select>
+							</div>
+			        	</div>
+			        	<div class="form-group">
+			        		<label th:for="munkaLeiras">Leírás</label>
+			        		<textarea th:id="munkaLeiras" th:name="munkaLeiras" class="form-control" required></textarea>
+			        	</div>
+			        	<input type="hidden" th:id="usid">
+			        	<input type="hidden" th:id="munid">
+			        	<input type="submit" th:value="Módosítás" class="btn btn-success">
+			        </form>
+			      </div>
+			      <div class="modal-footer">
+			        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Bezárás</button>
+			      </div>
+			    </div>
+			  </div>
+			</div>
+			<div class="container mt-3">
+				<div class="row">
+					<div class="col-sm-12">
+						<table class="table table-striped mt-2 text-center">
+							<thead class="bg-dark text-white">
+								<tr>
+									<th th:text="#{munkavegzesdatum}">Munkavégzés dátuma</th>
+									<th th:text="#{teljesnev}">Dolgozó neve</th>
+									<th th:text="#{projektneve}">Projekt neve</th>
+									<th th:text="#{tipus}">Munka típusa</th>
+									<th th:text="#{leiras}">Munka leírása</th>
+									<th th:text="#{raforditas}">Ráfordítás</th>
+									<th th:text="#{modositas}">Módosítás</th>
+									<th th:text="#{torles}">Törlés</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="munka : ${munkak}" th:id="${munka.id}">
+									<td th:id="datum" th:text="${munka.datum}"></td>
+									<td th:id="user" th:text="${munka.userpro.user.teljesnev}" th:value="${munka.userpro.user.id}"></td>
+									<td th:id="projekt" th:text="${munka.userpro.projekt.name}" th:value="${munka.userpro.projekt.id}"></td>
+									<td th:id="tipus">
+										<p th:if="${munka.tipus == 1}" th:text="programozás"></p>
+										<p th:if="${munka.tipus == 2}" th:text="tervezés"></p>
+										<p th:if="${munka.tipus == 3}" th:text="tesztelés"></p>
+										<p th:if="${munka.tipus == 4}" th:text="dokumentáció"></p>
+										<p th:if="${munka.tipus == 5}" th:text="támogatás"></p>
+										<p th:if="${munka.tipus == 6}" th:text="grafikaimunka"></p>
+										<p th:if="${munka.tipus == 7}" th:text="tartalomkezelés"></p>
+										<p th:if="${munka.tipus == 8}" th:text="egyéb"></p>
+									</td>
+									<td th:id="leiras" th:text="${munka.munkaleiras}"></td>
+									<td th:id="raforditas" th:value="${munka.raforditas}" th:text="${munka.raforditasAlakitas()}"></td>
+									<td><button class="btn btn-success modosit" th:text="#{modositas}" th:id="${munka.id}" data-bs-toggle="modal" data-bs-target="#modositasModal"></button></td>
+									<td><button class="btn btn-danger torles" th:text="#{torles}" th:id="${munka.id}"></button></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+			<div class="container mt-3">
+				<div class="row">
+					<div class="col-sm-12">
+						<form th:method="POST" th:id="elszamolasLekerdForm">
+						
+							<div class="row">
+								<div class="col">
+									<div class="form-group">
+										<label th:for="osszProjekt">Projekt</label>
+										<select th:id="osszProjekt" class="form-select" required>
+											<option th:each="projekt : ${projektek}" th:value="${projekt.id}" th:text="${projekt.name}"></option>
+										</select>
+									</div>
+								</div>
+								<div class="col">
+									<div class="form-group">
+										<label th:for="projekthezEv">Év</label>
+										<select th:id="projekthezEv" th:name="projekthezEv" class="form-select" required>
+											
+										</select>
+									</div>
+								</div>
+								<div class="col">
+									<div class="form-group">
+										<label th:for="projektEvhezHonap">Hónap</label>
+										<select th:id="projektEvhezHonap" th:name="projektEvhezHonap" class="form-select">
+											<option value="nincs">Nincs</option>
+										</select>
+									</div>
+								</div>
+							</div>
+							
+						</form>
+					</div>
+				</div>
+			</div>
+			
+		</div>
+		
+		<script layout:fragment="script" th:src="@{/js/munka.js}"></script>
+		
+	</body>
+</html>
