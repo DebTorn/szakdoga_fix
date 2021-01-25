@@ -7,4 +7,4 @@ Mindezt Java-ban szeretném megvalósítani, web alapon, Spring boot segítség�
 Oldalak: Ügyfelek, Dolgozók, Projektek, Elszámolás
 
 <h3>Ügyfelek:</h3>
-  
+  <p>asd</p>
