@@ -7,4 +7,11 @@ Mindezt Java-ban szeretném megvalósítani, web alapon, Spring boot segítség�
 Oldalak: Ügyfelek, Dolgozók, Projektek, Elszámolás
 
 <h3>Ügyfelek:</h3>
-  <p>asd</p>
+  <ul>
+    <li>Új ügyfél felvétele</li>
+    <li>Ügyfél meglévő projekthez kötés</li>
+    <li>Táblában ügyfelek megjelenítése</li>
+    <li>Ügyfelek aktivitásának állítása</li>
+    <li>Ügyfelek adatainak módosítása</li>
+    <li>Kötések törlése</li>
+  </ul>
