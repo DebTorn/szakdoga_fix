@@ -13,5 +13,17 @@ Oldalak: Ügyfelek, Dolgozók, Projektek, Elszámolás
     <li>Táblában ügyfelek megjelenítése</li>
     <li>Ügyfelek aktivitásának állítása</li>
     <li>Ügyfelek adatainak módosítása</li>
+    <li>Kötések megjelenítése</li>
+    <li>Kötések törlése</li>
+  </ul>
+<h3>Dolgozók:</h3>
+  <ul>
+    <li>Új dolgozó felvétele</li>
+    <li>Dolgozó meglévő projekthez kötés</li>
+    <li>Táblában dolgozók megjelenítése</li>
+    <li>Dolgozók aktivitásának állítása(belépés szabályozás)</li>
+    <li>Dolgozók adatainak módosítása(érzékeny adatok kivétel)</li>
+    <li>Kötések megjelenítése</li>
+    <li>Kötések módosítása</li>
     <li>Kötések törlése</li>
   </ul>
